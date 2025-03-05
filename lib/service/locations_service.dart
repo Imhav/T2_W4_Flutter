@@ -1,13 +1,65 @@
-import 'package:week_3_blabla_project/model/ride/locations.dart';
 
-import '../dummy_data/dummy_data.dart';
 
-////
-///   This service handles:
-///   - The list of available rides
+// import '../dummy_data/dummy_data.dart';
+// import '../model/ride/locations.dart';
+
+// ////
+// ///   This service handles:
+// ///   - The list of available rides
+// ///
+// class LocationsService {
+
+//   static const List<Location> availableLocations = fakeLocations; 
+ 
+// }
+
+
+
+import '../model/ride/locations.dart';
+import '../repository/location_repository.dart'; 
+
+
+///
+/// This service handles:
+/// - The list of available locations
 ///
 class LocationsService {
+  // Static private instance for singleton pattern
+  static LocationsService? _instance;
 
-  static const List<Location> availableLocations = fakeLocations; 
- 
+  // Access to the location repository via dependency injection
+  final LocationsRepository repository;
+
+  ///
+  /// Private constructor
+  ///
+  LocationsService._internal(this.repository);
+
+  ///
+  /// Initialize the service with a specific repository
+  ///
+  static void initialize(LocationsRepository repository) {
+    if (_instance == null) {
+      _instance = LocationsService._internal(repository);
+    } else {
+      throw Exception("LocationsService is already initialized.");
+    }
+  }
+
+  ///
+  /// Singleton accessor
+  ///
+  static LocationsService get instance {
+    if (_instance == null) {
+      throw Exception("LocationsService is not initialized. Call initialize() first.");
+    }
+    return _instance!;
+  }
+
+  ///
+  /// Get the list of available locations from the repository
+  ///
+  List<Location> getLocations() {
+    return repository.getLocations();
+  }
 }

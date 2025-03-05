@@ -20,7 +20,11 @@ import 'ride_pref_input_tile.dart';
 /// The form can be created with an existing RidePref (optional).
 ///
 class RidePrefForm extends StatefulWidget {
-  const RidePrefForm( {super.key, required this.initialPreference, required this.onSubmit});
+  const RidePrefForm({
+    super.key,
+    required this.initialPreference,
+    required this.onSubmit,
+  });
 
   final RidePreference? initialPreference;
   final Function(RidePreference preference) onSubmit;
@@ -42,7 +46,7 @@ class _RidePrefFormState extends State<RidePrefForm> {
   @override
   void initState() {
     super.initState();
- 
+
     if (widget.initialPreference != null) {
       RidePreference current = widget.initialPreference!;
       departure = current.departure;
@@ -64,10 +68,11 @@ class _RidePrefFormState extends State<RidePrefForm> {
 
   void onDeparturePressed() async {
     // 1- Select a location
-    Location? selectedLocation = await Navigator.of(context)
-        .push<Location>(AnimationUtils.createBottomToTopRoute(BlaLocationPicker(
-      initLocation: departure,
-    )));
+    Location? selectedLocation = await Navigator.of(context).push<Location>(
+      AnimationUtils.createBottomToTopRoute(
+        BlaLocationPicker(initLocation: departure),
+      ),
+    );
 
     // 2- Update the from if needed
     if (selectedLocation != null) {
@@ -79,10 +84,11 @@ class _RidePrefFormState extends State<RidePrefForm> {
 
   void onArrivalPressed() async {
     // 1- Select a location
-    Location? selectedLocation = await Navigator.of(context)
-        .push<Location>(AnimationUtils.createBottomToTopRoute(BlaLocationPicker(
-      initLocation: arrival,
-    )));
+    Location? selectedLocation = await Navigator.of(context).push<Location>(
+      AnimationUtils.createBottomToTopRoute(
+        BlaLocationPicker(initLocation: arrival),
+      ),
+    );
 
     // 2- Update the from if needed
     if (selectedLocation != null) {
@@ -101,10 +107,11 @@ class _RidePrefFormState extends State<RidePrefForm> {
     if (isValid) {
       // 2 - Create a  new preference
       RidePreference newPreference = RidePreference(
-          departure: departure!,
-          departureDate: departureDate,
-          arrival: arrival!,
-          requestedSeats: requestedSeats);
+        departure: departure!,
+        departureDate: departureDate,
+        arrival: arrival!,
+        requestedSeats: requestedSeats,
+      );
 
       // 3 - Callback withg the new preference
       widget.onSubmit(newPreference);
@@ -143,51 +150,55 @@ class _RidePrefFormState extends State<RidePrefForm> {
   @override
   Widget build(BuildContext context) {
     return Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: BlaSpacings.m),
-            child: Column(
-              children: [
-                // 1 - Input the ride departure
-                RidePrefInputTile(
-                  isPlaceHolder: showDeparturePLaceHolder,
-                  title: departureLabel,
-                  leftIcon: Icons.location_on,
-                  onPressed: onDeparturePressed,
-                  rightIcon: switchVisible ? Icons.swap_vert : null,
-                  onRightIconPressed:
-                      switchVisible ? onSwappingLocationPressed : null,
-                ),
-                const BlaDivider(),
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: BlaSpacings.m),
+          child: Column(
+            children: [
+              // 1 - Input the ride departure
+              RidePrefInputTile(
+                isPlaceHolder: showDeparturePLaceHolder,
+                title: departureLabel,
+                leftIcon: Icons.location_on,
+                onPressed: onDeparturePressed,
+                rightIcon: switchVisible ? Icons.swap_vert : null,
+                onRightIconPressed:
+                    switchVisible ? onSwappingLocationPressed : null,
+              ),
+              const BlaDivider(),
 
-                // 2 - Input the ride arrival
-                RidePrefInputTile(
-                    isPlaceHolder: showArrivalPLaceHolder,
-                    title: arrivalLabel,
-                    leftIcon: Icons.location_on,
-                    onPressed: onArrivalPressed),
-                const BlaDivider(),
+              // 2 - Input the ride arrival
+              RidePrefInputTile(
+                isPlaceHolder: showArrivalPLaceHolder,
+                title: arrivalLabel,
+                leftIcon: Icons.location_on,
+                onPressed: onArrivalPressed,
+              ),
+              const BlaDivider(),
 
-                // 3 - Input the ride date
-                RidePrefInputTile(
-                    title: dateLabel,
-                    leftIcon: Icons.calendar_month,
-                    onPressed: () => {}),
-                const BlaDivider(),
+              // 3 - Input the ride date
+              RidePrefInputTile(
+                title: dateLabel,
+                leftIcon: Icons.calendar_month,
+                onPressed: () => {},
+              ),
+              const BlaDivider(),
 
-                // 4 - Input the requested number of seats
-                RidePrefInputTile(
-                    title: numberLabel,
-                    leftIcon: Icons.person_2_outlined,
-                    onPressed: () => {})
-              ],
-            ),
+              // 4 - Input the requested number of seats
+              RidePrefInputTile(
+                title: numberLabel,
+                leftIcon: Icons.person_2_outlined,
+                onPressed: () => {},
+              ),
+            ],
           ),
+        ),
 
-          // 5 - Launch a search
-          BlaButton(text: 'Search', onPressed: onSubmit),
-        ]);
+        // 5 - Launch a search
+        BlaButton(text: 'Search', onPressed: onSubmit),
+      ],
+    );
   }
 }
