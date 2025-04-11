@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:week_3_blabla_project/model/ride/ride.dart';
 
+
+import '../../../model/ride/ride.dart';
 import '../../../theme/theme.dart';
 import '../../../utils/date_time_util.dart';
 
